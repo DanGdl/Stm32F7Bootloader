@@ -111,16 +111,15 @@ void MX_FREERTOS_Init(void) {
   * @param  argument: Not used
   * @retval None
   */
+#include "../../rtg/rtg_main.h"
+
+__weak
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  for(;;)
-  {
-	  //printf("DefaultTask\r\n");
-	  osDelay(1);
-  }
+	rtg_main();
   /* USER CODE END StartDefaultTask */
 }
 
