@@ -122,7 +122,6 @@ void handle_hex_command(const IntelHexData_t* const command) {
 //	}
 	else if (command->operation == 4) {
 		memcpy(&address_base, command->data, sizeof(address_base));
-		address_base += 0x2;
 		printf("Set base address to 0x%04X\r\n", address_base);
 		const uint32_t address = (address_base << 16);
 
@@ -142,7 +141,7 @@ void handle_hex_command(const IntelHexData_t* const command) {
 		memcpy(&flash_prev, &flash, sizeof(flash_prev));
 	}
 	else if (command->operation == 5) {
-		printf("Program's start address 0x%08lX. What to do with this?\r\n", *((uint32_t*) command->data));
+		printf("Program's start address 0x%08lX\r\n", *((uint32_t*) command->data));
 	}
 	else {
 		printf("Unsupported HEX command %d!!\r\n", command->operation);

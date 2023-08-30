@@ -33,7 +33,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "../../rtg/rtg_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -239,7 +239,10 @@ void PeriphCommonClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void StartDefaultTask(void *argument) {
+	MX_LWIP_Init();
+	rtg_main();
+}
 /* USER CODE END 4 */
 
 /* MPU Configuration */
