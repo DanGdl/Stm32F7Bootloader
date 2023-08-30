@@ -53,9 +53,19 @@ void rtg_main(void) {
 	}
 	printf("TFTP server running\r\n");
 	// BOOT_ADD
+	uint32_t ticks_prev = 0;
+	const uint32_t diff = pdMS_TO_TICKS(1000);
 	while(1) {
 		ethernetif_input(&gnetif);
 		sys_check_timeouts();
+
+		uint32_t ticks = osKernelGetTickCount();
+		if (diff >= (ticks - ticks_prev)) {
+			char address[IP4ADDR_STRLEN_MAX] = { '\0' };
+			printf("Bootloader to flash a program on card. IP: %s, port 69\r\n",
+					ip4addr_ntoa_r(&gnetif.ip_addr, address, IP4ADDR_STRLEN_MAX));
+			ticks_prev = ticks;
+		}
 	}
 
 	tftp_cleanup();
