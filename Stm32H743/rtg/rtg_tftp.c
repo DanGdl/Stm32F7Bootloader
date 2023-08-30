@@ -102,9 +102,6 @@ void handle_hex_command(const IntelHexData_t* const command) {
 		for (int i = 0; i < command->size; i++) {
 			printf("%02X", command->data[i]);
 		}
-#ifdef STORE_RAW_DATA
-		printf(", raw: 0x%s", command->data_raw);
-#endif
 		printf("\r\n");
 		uint32_t written = 0;
 		if (flash_write(
@@ -161,17 +158,11 @@ void handle_hex_buffer(const char* const buffer, uint16_t len) {
 
 	IntelHexData_t storage = { 0 };
 	uint8_t data[SIZE_TFTP_DATA] = { '\0' };
-#ifdef STORE_RAW_DATA
-	uint8_t data_raw[SIZE_TFTP_DATA] = { '\0' };
-#endif
 
 	uint8_t start = 1;
 	const char* p_symbol = strchr_n(buffer, ':', len);
 	while (p_symbol) {
 		storage.data = (uint8_t*) data;
-#ifdef STORE_RAW_DATA
-		storage.data_raw = (uint8_t*) data_raw;
-#endif
 
 		if (start && p_symbol != buffer) {
 			// add second part to stored part of command and handle it
@@ -221,9 +212,6 @@ void handle_hex_buffer(const char* const buffer, uint16_t len) {
 		p_symbol = next;
 		memset(&storage, 0, sizeof(storage));
 		memset(data, 0, sizeof(data));
-#ifdef STORE_RAW_DATA
-		memset(data_raw, 0, sizeof(data_raw));
-#endif
 	}
 }
 

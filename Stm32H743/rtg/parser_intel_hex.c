@@ -50,11 +50,6 @@ void parse_intel_hex(
 			storage->operation = value;
 		}
 		else if (idx >= TOKEN_DATA && idx < idx_data_end) {
-#ifdef STORE_RAW_DATA
-			if (idx == TOKEN_DATA) {
-				memcpy(storage->data_raw, buffer + TOKEN_DATA, idx_data_end - TOKEN_DATA);
-			}
-#endif
 			if (storage->operation == 4 || storage->operation == 5) {
 				if (idx != TOKEN_DATA) {
 					continue;

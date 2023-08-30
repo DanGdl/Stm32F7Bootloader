@@ -11,9 +11,6 @@ typedef struct IntelHexData {
 	uint8_t operation;
 	uint8_t checksum_ok;
 	uint8_t* data;
-#ifdef STORE_RAW_DATA
-	uint8_t* data_raw;
-#endif
 } IntelHexData_t;
 
 void parse_intel_hex(
