@@ -12,8 +12,8 @@
 #include "lwip.h"
 #include "tftp.h"
 #include "util.h"
-#include "usart.h"
 #include "flash.h"
+#include "stm32h7xx_hal.h"
 #include "rtg_main.h"
 #include "tftp_server.h"
 #include "parser_intel_hex.h"
@@ -53,19 +53,9 @@ void rtg_main(void) {
 	}
 	printf("TFTP server running\r\n");
 	// BOOT_ADD
-	uint32_t ticks_prev = 0;
-	const uint32_t diff = pdMS_TO_TICKS(1000);
 	while(1) {
 		ethernetif_input(&gnetif);
 		sys_check_timeouts();
-
-		uint32_t ticks = osKernelGetTickCount();
-		if (diff >= (ticks - ticks_prev)) {
-			char address[IP4ADDR_STRLEN_MAX] = { '\0' };
-			printf("Bootloader to flash a program on card. IP: %s, port 69\r\n",
-					ip4addr_ntoa_r(&gnetif.ip_addr, address, IP4ADDR_STRLEN_MAX));
-			ticks_prev = ticks;
-		}
 	}
 
 	tftp_cleanup();
@@ -132,6 +122,7 @@ void handle_hex_command(const IntelHexData_t* const command) {
 //	}
 	else if (command->operation == 4) {
 		memcpy(&address_base, command->data, sizeof(address_base));
+		address_base += 0x2;
 		printf("Set base address to 0x%04X\r\n", address_base);
 		const uint32_t address = (address_base << 16);
 
@@ -151,7 +142,7 @@ void handle_hex_command(const IntelHexData_t* const command) {
 		memcpy(&flash_prev, &flash, sizeof(flash_prev));
 	}
 	else if (command->operation == 5) {
-		printf("Program's start address 0x%08lX\r\n", *((uint32_t*) command->data));
+		printf("Program's start address 0x%08lX. What to do with this?\r\n", *((uint32_t*) command->data));
 	}
 	else {
 		printf("Unsupported HEX command %d!!\r\n", command->operation);

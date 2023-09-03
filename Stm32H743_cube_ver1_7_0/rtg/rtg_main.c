@@ -295,6 +295,7 @@ void handle_hex_command(const IntelHexData_t* const command) {
 //	}
 	else if (command->operation == 4) {
 		memcpy(&address_base, command->data, sizeof(address_base));
+		address_base += 0x2;
 		printf("Set base address to 0x%04X\r\n", address_base);
 		const uint32_t address = (address_base << 16);
 

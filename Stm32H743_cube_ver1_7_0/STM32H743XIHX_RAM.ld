@@ -160,6 +160,14 @@ SECTIONS
     . = ALIGN(8);
   } >RAM
 
+ .ramd3 :
+  {
+  	. = ABSOLUTE(0x38000000);
+    *(.RxLPUART)
+    . = ABSOLUTE(0x38000400);
+    *(.TxLPUART)
+  } >RAM_D3
+
   /* Remove information from the standard libraries */
   /DISCARD/ :
   {

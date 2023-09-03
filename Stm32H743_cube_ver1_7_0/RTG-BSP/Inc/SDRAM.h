@@ -1,0 +1,90 @@
+/*
+ * SDRAM.h
+ *
+ *  Created on: Aug 9, 2021
+ *      Author: itzhaki
+ */
+#ifndef INC_SDRAM_H_
+#define INC_SDRAM_H_
+
+#include "main.h"
+
+#define SDRAM_SIZE_1M       	( (uint32_t)0x100000 )
+#define SDRAM_SIZE_16M      	((uint32_t)0x1000000 )
+#define SDRAM_SIZE_32M      	( (uint32_t)0x2000000 )
+#define SDRAM_SIZE_64M      	( (uint32_t)0x4000000 )
+
+//#define SDRAM_SIZE      		((uint32_t)0x1000)
+#define SDRAM_SIZE      		SDRAM_SIZE_64M
+#define SDRAM_TEST_SIZE         SDRAM_SIZE_1M
+
+#define SDRAM_BANK_ADDR     	((uint32_t)0xD0000000)
+#define SDRAM_MAX_ADDR     		SDRAM_BANK_ADDR + SDRAM_SIZE
+//#define SDRAM_MAX_ADDR     		SDRAM_BANK_ADDR + ((uint32_t)0x01000)
+
+#define SDRAM_TIMEOUT                    		((uint32_t)0xFFFF)
+#define REFRESH_COUNT                    		((uint32_t)0x0603)   /* SDRAM refresh counter */
+
+#define SDRAM_MODEREG_BURST_LENGTH_1             ((uint16_t)0x0000)
+#define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL      ((uint16_t)0x0000)
+#define SDRAM_MODEREG_CAS_LATENCY_3              ((uint16_t)0x0030)
+#define SDRAM_MODEREG_OPERATING_MODE_STANDARD    ((uint16_t)0x0000)
+#define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE     ((uint16_t)0x0200)
+
+#define SDRAM_MEM_BUS_WIDTH_32          4
+
+#define SRAM_OK 						0
+#define SRAM_ADD_ERROR					1
+#define SRAM_INTEGRITY_ERROR 			2
+#define SRAM_SIZE_ERROR					4
+#define SRAM_ERROR					    8
+
+#define MEMORY_TEST_AAAAAAA 			0
+#define MEMORY_TEST_5555555 			1
+#define MEMORY_TEST_RANDOM 				2
+#define MEMORY_TEST_ADDDRESSABILITY 	3
+#define MEMORY_TEST_EXTENSIVE 			4
+#define MEMORY_TEST_WALKING_1			5
+#define MEMORY_TEST_WALKING_0			6
+
+#define STARTTESTSDRAM1M " EXTERNAL SDRAM START TEST 1M: %d"
+#define STARTTESTSDRAM16M " EXTERNAL SDRAM START TEST 16M: %d"
+#define SDRAMCMDERROR " EXTERNAL SDRAM COMMND ERROR ONLY 1 OR 2 :%d"
+#define ENDTTESTSDRAMPASS " EXTERNAL SDRAM TEST END: PASS"
+#define ENDTTESTSDRAMFAIL " EXTERNAL SDRAM TEST END: FAIL"
+#define SDRAMAAAAAAAPASS " EXTERNAL SDRAM TEST AAAAAAA: PASS"
+#define SDRAMAAAAAAAFAIL " EXTERNAL SDRAM TEST AAAAAAA: FAIL"
+#define SDRAM5555555PASS " EXTERNAL SDRAM TEST 5555555: PASS"
+#define SDRAM5555555FAIL " EXTERNAL SDRAM TEST 5555555: FAIL"
+#define SDRAMRANDOMPASS " EXTERNAL SDRAM TEST RANDOM: PASS"
+#define SDRAMRANDOMFAIL " EXTERNAL SDRAM TEST RANDOM: FAIL"
+#define SDRAMADDDRESSABILITYPASS " EXTERNAL SDRAM TEST ADDDRESSABILITY: PASS"
+#define SDRAMADDDRESSABILITYFAIL " EXTERNAL SDRAM TEST ADDDRESSABILITY: FAIL"
+#define SDRAMEXTENSIVEPASS " EXTERNAL SDRAM TEST EXTENSIVE: PASS"
+#define SDRAMEXTENSIVEFAIL  " EXTERNAL SDRAM TEST EXTENSIVE: FAIL"
+#define WALKING1PASS " EXTERNAL SDRAM TEST WALKING_1: PASS"
+#define WALKING1FAIL  " EXTERNAL SDRAM TEST WALKING_1: FAIL"
+#define WALKING0PASS " EXTERNAL SDRAM TEST WALKING_0: PASS"
+#define WALKING0FAIL  " EXTERNAL SDRAM TEST WALKING_0: FAIL"
+
+extern SDRAM_HandleTypeDef hsdram1;
+
+//#pragma pack (push,1)
+//
+//typedef struct
+//{
+//	uint32_t 	TimeTag;
+//	uint8_t 	passFail;
+//}BIT_SDRAM_t;
+//
+//#pragma pack ( pop )
+
+void RTG_SDRAM_int(void);
+uint8_t RTG_Write_SDRAM(uint32_t add, uint32_t * data);
+uint8_t RTG_Read_SDRAM(uint32_t add, uint32_t * data);
+uint8_t RTG_Write_Buff_To_SDRAM(uint32_t add, uint32_t* buf, uint32_t size);
+uint8_t RTG_Read_Buff_From_SDRAM(uint32_t add, uint32_t* buf, uint32_t size);
+
+uint16_t RTG_SDRAM_bit(CIB_PBIT_SDRAM * mes);
+
+#endif /* INC_SDRAM_H_ */
